@@ -1,0 +1,20 @@
+#+TITLE: RandomMatrixDistributions
+
+A Julia package containing =Distribution.jl=-type specifications for various distributions arising from random matrix theory.
+
+
+
+* Currently implemented distributions
+  - =SpikedWishart=: Wishart distribution with spiked covariance (sampler for more than one spike implemented only for the real case.cite:DumEde
+  - =Jacobi=: Random matrices of the form /E(E+H)^{-1} ./, where /E/ and /H/ are white Wisharts.cite:KilNen
+  - =MarchenkoPastur=: Limiting empirical spectral density of a white Wishart matrix.
+  - =Wachter=: Limiting empirical spectral density of /HE^{-1} ./
+
+* Efficient samplers
+  The function =randeigvals= efficiently samples from the distribution of eigenvalues of the implemented random matrix distributions. It does this by generating a tridiagonal or banded matrix with eigenvalue equal in distribution to the specified model.
+
+* Examples
+  An Jupyter notebook demonstrating all of the implemented eigenvalue samplers is provided in =/examples/eigenvalue-simulation.ipynb=.
+
+* References
+  bibliography:references.bib
