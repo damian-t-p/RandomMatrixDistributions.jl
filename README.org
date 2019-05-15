@@ -5,8 +5,8 @@ A Julia package containing =Distribution.jl=-type specifications for various dis
 
 
 * Currently implemented distributions
-  - =SpikedWishart=: Wishart distribution with spiked covariance (sampler for more than one spike implemented only for the real case.cite:DumEde
-  - =Jacobi=: Random matrices of the form /E(E+H)^{-1} ./, where /E/ and /H/ are white Wisharts.cite:KilNen
+  - =SpikedWishart=: Wishart distribution with spiked covariance (sampler for more than one spike implemented only for the real case. [1]
+  - =Jacobi=: Random matrices of the form /E(E+H)^{-1} ./, where /E/ and /H/ are white Wisharts. [2]
   - =MarchenkoPastur=: Limiting empirical spectral density of a white Wishart matrix.
   - =Wachter=: Limiting empirical spectral density of /HE^{-1} ./
 
@@ -16,5 +16,6 @@ A Julia package containing =Distribution.jl=-type specifications for various dis
 * Examples
   An Jupyter notebook demonstrating all of the implemented eigenvalue samplers is provided in =/examples/eigenvalue-simulation.ipynb=.
 
-* References
-  bibliography:references.bib
+[1] Dumitriu & Edelman, Matrix Models for beta ensembles, Journal of Mathematical Physics, (11), (2002).
+[2] Killip & Nenciu, Matrix Models for Circular Ensembles, International Mathematics Research Notices, 50, (2004).
+
