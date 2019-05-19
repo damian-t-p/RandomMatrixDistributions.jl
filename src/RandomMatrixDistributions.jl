@@ -1,9 +1,12 @@
 module RandomMatrixDistributions
 
+import RandomMatrices
+
 using Random, Distributions
 using LinearAlgebra
 using BandedMatrices
 using KrylovKit
+using ApproxFun
 
 import LinearAlgebra: eigmax
 
@@ -12,6 +15,7 @@ import Distributions: minimum, maximum
 import Distributions: ContinuousUnivariateDistribution,
     ContinuousMatrixDistribution,
     cdf, pdf, entropy, insupport, mean, median, modes, kurtosis, skewness, std, var, moment
+
 
 export randeigvals, randeigstat,
     minimum, maximum,
@@ -40,6 +44,7 @@ include("SpikedWishart.jl")
 include("Jacobi.jl")
 
 include("densities/MarchenkoPastur.jl")
+include("densities/TracyWidom.jl")
 include("densities/Wachter.jl")
 
 end
