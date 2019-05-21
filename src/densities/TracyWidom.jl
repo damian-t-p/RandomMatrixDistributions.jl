@@ -42,8 +42,8 @@ function _TWinv(t, beta)
         righta = pdf(TracyWidom(beta), u)/(beta * sqrt(u) * exp(-beta * u^(3/2)*2/3))
         rightb = x[end] - righta * (1 - exp(-beta * u^(3/2) * 2/3))
 
-        lefta = pdf(TracyWidom(beta), l)/(-beta * l/12 * exp(-beta * l^2/24))
-        leftb = x[1] - lefta * exp(-beta * l^2/24)
+        lefta = pdf(TracyWidom(beta), l)/(beta * l^2/8 * exp(beta * l^3/24))
+        leftb = x[1] - lefta * exp(-beta * abs(l)^3/24)
 
         itp = interpolate((x,), y, Gridded(Linear()))
 
@@ -56,7 +56,7 @@ function _TWinv(t, beta)
         return (log(1/(1 - s)) * 3/(2 * beta))^(2/3)
     elseif t < _TWinvs[beta][6]
         s = (t - _TWinvs[beta][5])/_TWinvs[beta][4]
-        return -sqrt(log(1/s) * 24/beta)
+        return -(log(1/s) * 24/beta)^(1/3)
     else
         return _TWinvs[beta][end](t)
     end
