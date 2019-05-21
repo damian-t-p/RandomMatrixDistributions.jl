@@ -5,13 +5,15 @@ A Julia package containing =Distribution.jl=-type specifications for various dis
 ** Currently implemented distributions
 
 *** Matrix distributions
-   - =SpikedWishart=: Wishart distribution with spiked covariance (sampler for more than one spike implemented only for the real case. [1]
-   - =Jacobi=: Random matrices of the form /E(E+H)^{-1},/ where /E/ and /H/ are white Wisharts. [2]
+   - =SpikedWishart(beta, n, p, spikes)=: Wishart distribution with spiked covariance (sampler for more than one spike implemented only for the real case. [1]
+
+     =spikes= is an array =[s1, ..., sr]= such that the Wishart covariance is diagonal with entries /1 + s_1, ... 1 + s_r, 1, ..., 1/.
+   - =Jacobi(beta, n1, n2, p)=: Random matrices of the form /E(E+H)^{-1}./ Here /E/ and /H/ are /(n_1, p)/ and /(n_2, p)/ white Wisharts respectively. [2]
 
 *** Limiting eigenvalue distributions
-   - =MarchenkoPastur=: Limiting empirical spectral density of a white Wishart matrix.
-   - =TracyWidom=: Limiting distribution of the maximum eigenvalue of many random matrix ensembles.
-   - =Wachter=: Limiting empirical spectral density of /HE^{-1}./
+   - =MarchenkoPastur(gamma)=: Limiting empirical spectral density of a real white Wishart matrix with /p/n → gamma/ as long as /0 < gamma < 1/.
+   - =TracyWidom(beta)=: Limiting distribution of the maximum eigenvalue of many random matrix ensembles with Dyson parameter beta.
+   - =Wachter(gamma1, gamma2)=: Limiting empirical spectral density of /Σ_1 Σ_2^{-1}./ Here /Σ_1/ and /Σ_2/ are sample covariance matrices with /n_1/p → gamma_1/ and /n_2/p → gamma_2/.
 
 ** Efficient samplers
    The function =randeigvals= efficiently samples from the distribution of eigenvalues of the implemented random matrix distributions. It does this by generating a tridiagonal or banded matrix with eigenvalue equal in distribution to the specified model.
