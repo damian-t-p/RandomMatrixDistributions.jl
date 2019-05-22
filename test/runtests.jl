@@ -7,6 +7,8 @@ p = 400
 
 # test white Wishart
 for beta in [1, 4, 8]
+    println("Testing white Wishart with β = ", beta)
+    
     λs = randeigvals(SpikedWishart(beta, n, p))
 
     @test length(λs) == p
@@ -14,6 +16,7 @@ for beta in [1, 4, 8]
 
     @test minimum(λs) > 0
 
+    println("Testing Jacobi with β = ", beta)
     λs = randeigvals(Jacobi(beta, n, n, p))
 
     @test length(λs) == p
@@ -22,6 +25,7 @@ for beta in [1, 4, 8]
     @test minimum(λs) > 0
 end
 
+println("Testing Spiked Wishart with β = 1")
 s = 8
 λs = randeigvals(SpikedWishart(1, n, p, [2, 4, s]))/n
 
