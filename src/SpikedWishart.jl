@@ -60,3 +60,20 @@ function randbanded(d::SpikedWishart)
 
     Symmetric(U' * U)
 end
+
+function critspikes(d::SpikedWishart)
+    gamma = d.p/d.n
+    d.spikes[d.spikes .> sqrt(gamma)]
+end
+
+function covspikedist(d::SpikedWishart)
+    gamma = d.p/d.n
+    cspikes = critspikes(d)
+    
+    l = 1.+ cspikes
+    
+    mu = @. l * (1 + gamma/cspikes)
+    sigma = @. l * sqrt(gamma * 2 * (1 - gamma/cspikes^2))
+
+    MvNormal(mu, sigma)
+end
