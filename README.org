@@ -1,12 +1,20 @@
 #+TITLE: RandomMatrixDistributions
+[[https://travis-ci.com/damian-t-p/RandomMatrixDistributions.jl][https://travis-ci.com/damian-t-p/RandomMatrixDistributions.jl.svg?branch=master]]
 
 A Julia package containing =Distribution.jl=-type specifications for various distributions arising from random matrix theory.
 
 ** Currently implemented distributions
-   - =SpikedWishart=: Wishart distribution with spiked covariance (sampler for more than one spike implemented only for the real case. [1]
-   - =Jacobi=: Random matrices of the form /E(E+H)^{-1} ./, where /E/ and /H/ are white Wisharts. [2]
-   - =MarchenkoPastur=: Limiting empirical spectral density of a white Wishart matrix.
-   - =Wachter=: Limiting empirical spectral density of /HE^{-1} ./
+
+*** Matrix distributions
+   - =SpikedWishart(beta, n, p, spikes)=: Wishart distribution with spiked covariance (sampler for more than one spike implemented only for the real case. [1]
+
+     =spikes= is an array =[s1, ..., sr]= such that the Wishart covariance is diagonal with entries /1 + s_{1}, ... 1 + s_{r}, 1, ..., 1/.
+   - =Jacobi(beta, n1, n2, p)=: Random matrices of the form /E(E+H)^{-1}./ Here /E/ and /H/ are /(n_{1}, p)/ and /(n_{2}, p)/ white Wisharts respectively. [2]
+
+*** Limiting eigenvalue distributions
+   - =MarchenkoPastur(gamma)=: Limiting empirical spectral density of a real white Wishart matrix with /p/n → γ/ as long as /0 < γ < 1/.
+   - =TracyWidom(beta)=: Limiting distribution of the maximum eigenvalue of many random matrix ensembles with Dyson parameter beta.
+   - =Wachter(gamma1, gamma2)=: Limiting empirical spectral density of /Σ_{1} Σ_{2}^{-1}./ Here /Σ_{1}/ and /Σ_{2}/ are sample covariance matrices with /n_{1}/p → γ_{1}/ and /n_{2}/p → γ_{2}/.
 
 ** Efficient samplers
    The function =randeigvals= efficiently samples from the distribution of eigenvalues of the implemented random matrix distributions. It does this by generating a tridiagonal or banded matrix with eigenvalue equal in distribution to the specified model.

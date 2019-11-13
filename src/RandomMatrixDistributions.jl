@@ -7,10 +7,11 @@ using LinearAlgebra
 using BandedMatrices
 using KrylovKit
 using ApproxFun
+using Interpolations
 
 import LinearAlgebra: eigmax
 
-import Distributions: minimum, maximum
+import Distributions: minimum, maximum, quantile
 
 import Distributions: ContinuousUnivariateDistribution,
     ContinuousMatrixDistribution,
@@ -18,7 +19,7 @@ import Distributions: ContinuousUnivariateDistribution,
 
 
 export randeigvals, randeigstat,
-    minimum, maximum,
+    minimum, maximum, quantile
     cdf, pdf, entropy, insupport, mean, median, modes, kurtosis, skewness, std, var, moment,
     eigmax
 
