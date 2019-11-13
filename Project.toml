@@ -1,7 +1,7 @@
 name = "RandomMatrixDistributions"
 uuid = "af03f0a2-7cbb-11e9-3152-f985fa477d26"
 authors = ["damian-t-p <damian.pavlyshyn@gmail.com>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 ApproxFun = "28f2ccd6-bb30-5033-b560-165f7b14dc2f"
@@ -14,13 +14,13 @@ Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 RandomMatrices = "2576dda1-a324-5b11-aa66-c48ed7e3c618"
 
 [compat]
-julia = "1.0, 1.1"
-ApproxFun = "0.11.1"
-BandedMatrices = "0.9.1"
-Distributions = "0.19.2"
-Interpolations = "0.12.0"
-KrylovKit = "0.3.4"
-RandomMatrices = "0.4.0"
+julia = "1.0, 1.1, 1.2"
+ApproxFun = "0.11"
+BandedMatrices = "0.12"
+Distributions = "0.19, 0.20, 0.21"
+Interpolations = "0.12"
+KrylovKit = "0.3, 0.4"
+RandomMatrices = "0.4, 0.5"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
