@@ -1,4 +1,4 @@
-export SpikedWishart
+export SpikedWishart, covspikedist
 
 struct SpikedWishart <: ContinuousMatrixDistribution
     beta::Integer
@@ -70,7 +70,7 @@ function covspikedist(d::SpikedWishart)
     gamma = d.p/d.n
     cspikes = critspikes(d)
     
-    l = 1.+ cspikes
+    l = 1 .+ cspikes
     
     mu = @. l * (1 + gamma/cspikes)
     sigma = @. l * sqrt(gamma * 2 * (1 - gamma/cspikes^2))
