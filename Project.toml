@@ -16,7 +16,7 @@ RandomMatrices = "2576dda1-a324-5b11-aa66-c48ed7e3c618"
 [compat]
 julia = "1.0, 1.1, 1.2"
 ApproxFun = "0.11"
-BandedMatrices = "0.12"
+BandedMatrices = ">= 0.9"
 Distributions = "0.19, 0.20, 0.21"
 Interpolations = "0.12"
 KrylovKit = "0.3, 0.4"
