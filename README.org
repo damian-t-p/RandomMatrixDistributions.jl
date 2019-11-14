@@ -1,5 +1,6 @@
 #+TITLE: RandomMatrixDistributions
 [[https://travis-ci.com/damian-t-p/RandomMatrixDistributions.jl][https://travis-ci.com/damian-t-p/RandomMatrixDistributions.jl.svg?branch=master]]
+[[https://codecov.io/gh/damian-t-p/RandomMatrixDistributions.jl][https://codecov.io/gh/damian-t-p/RandomMatrixDistributions.jl/branch/master/graph/badge.svg]]
 
 A Julia package containing =Distribution.jl=-type specifications for various distributions arising from random matrix theory.
 
