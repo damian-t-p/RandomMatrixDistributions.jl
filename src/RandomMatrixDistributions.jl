@@ -1,13 +1,13 @@
 module RandomMatrixDistributions
 
-import RandomMatrices
+#import RandomMatrices
 
 using Random, Distributions
 using LinearAlgebra
 using BandedMatrices
 using KrylovKit
-using ApproxFun
-using Interpolations
+#using ApproxFun
+#using Interpolations
 
 import LinearAlgebra: eigmax
 
@@ -45,7 +45,7 @@ include("SpikedWishart.jl")
 include("Jacobi.jl")
 
 include("densities/MarchenkoPastur.jl")
-include("densities/TracyWidom.jl")
+#include("densities/TracyWidom.jl")
 include("densities/Wachter.jl")
 
 end
