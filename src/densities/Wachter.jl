@@ -11,12 +11,20 @@ distribution of Wachter(γ<sub>1</sub>, γ<sub>2</sub>).
 struct Wachter <: ContinuousUnivariateDistribution
     gamma1::Real
     gamma2::Real
-    Wachter(gamma1, gamma2) = 0 < gamma2 < 1 ? new(gamma1, gamma2) : error("Gamma2 must be in (0, 1)")
+    Wachter(gamma1, gamma2) = 0 <= gamma2 < 1 ? new(gamma1, gamma2) : error("Gamma2 must be in [0, 1)")
+end
+
+function minimum(d::Wachter)
+    ((1 - sqrt(d.gamma1 + d.gamma2 - d.gamma1 * d.gamma2))/(1 - d.gamma2))^2
+end
+
+function maximum(d::Wachter)
+    ((1 + sqrt(d.gamma1 + d.gamma2 - d.gamma1 * d.gamma2))/(1 - d.gamma2))^2
 end
 
 function pdf(d::Wachter, x)
-    a = ((1 - sqrt(d.gamma1 + d.gamma2 - d.gamma1 * d.gamma2))/(1 - d.gamma2))^2
-    b = ((1 + sqrt(d.gamma1 + d.gamma2 - d.gamma1 * d.gamma2))/(1 - d.gamma2))^2
+    a = minimum(d)
+    b = maximum(d)
 
     if a < x < b
         return (1 - d.gamma2) * sqrt((b - x) * (x - a))/(2 * pi * x * (d.gamma1 + d.gamma2 * x))

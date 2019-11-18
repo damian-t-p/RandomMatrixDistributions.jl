@@ -5,4 +5,5 @@ using Test
 @testset "RandomMatrixDistributions" begin
     seed!(1)
     include("MatrixSamplers.jl")
+    include("Densities.jl")
 end

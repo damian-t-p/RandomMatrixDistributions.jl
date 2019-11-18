@@ -2,7 +2,7 @@ export MarchenkoPastur
 
 struct MarchenkoPastur <: ContinuousUnivariateDistribution
     gamma::Real
-    MarchenkoPastur(gamma) = 0 < gamma < 1 ? new(gamma) : error("Gamma must be in (0, 1)")
+    MarchenkoPastur(gamma) = 0 < gamma <= 1 ? new(gamma) : error("Gamma must be in (0, 1]")
 end
 
 function minimum(d::MarchenkoPastur)
