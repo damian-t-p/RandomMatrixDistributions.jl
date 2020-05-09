@@ -7,7 +7,7 @@ A Julia package containing =Distribution.jl=-type specifications for various dis
 ** Currently implemented distributions
 
 *** Matrix distributions
-   - =SpikedWishart(beta, n, p, spikes)=: Wishart distribution with spiked covariance (sampler for more than one spike implemented only for the real case. [1]
+   - =SpikedWishart(beta, n, p, spikes; scaled=): Wishart distribution with spiked covariance (sampler for more than one spike implemented only for the real case. [1]
 
      =spikes= is an array =[s1, ..., sr]= such that the Wishart covariance is diagonal with entries /1 + s_{1}, ... 1 + s_{r}, 1, ..., 1/.
    - =Jacobi(beta, n1, n2, p)=: Random matrices of the form /E(E+H)^{-1}./ Here /E/ and /H/ are /(n_{1}, p)/ and /(n_{2}, p)/ white Wisharts respectively. [2]
@@ -18,7 +18,7 @@ A Julia package containing =Distribution.jl=-type specifications for various dis
    - =Wachter(gamma1, gamma2)=: Limiting empirical spectral density of /Σ_{1} Σ_{2}^{-1}./ Here /Σ_{1}/ and /Σ_{2}/ are sample covariance matrices with /n_{1}/p → γ_{1}/ and /n_{2}/p → γ_{2}/.
 
 ** Efficient samplers
-   The function =randeigvals= efficiently samples from the distribution of eigenvalues of the implemented random matrix distributions. It does this by generating a tridiagonal or banded matrix with eigenvalue equal in distribution to the specified model.
+   The function =randeigvals= efficiently samples from the distribution of eigenvalues of the implemented random matrix distributions. It does this by generating a tridiagonal or banded matrix with eigenvalue equal in distribution to the specified model. 
 
 ** Examples
    An Jupyter notebook demonstrating all of the implemented eigenvalue samplers is provided in =/examples/eigenvalue-simulation.ipynb=.
