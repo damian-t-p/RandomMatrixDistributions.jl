@@ -40,6 +40,7 @@ end
 
 include("BandedHelpers.jl")
 
+include("SpikedWigner.jl")
 include("SpikedWishart.jl")
 
 include("Jacobi.jl")

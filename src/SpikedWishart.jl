@@ -5,11 +5,17 @@ struct SpikedWishart <: ContinuousMatrixDistribution
     n::Integer
     p::Integer
     spikes::Array{Float64, 1}
+    scaled::Bool
 end
 
-SpikedWishart(beta, n, p) = SpikedWishart(beta, n, p, [])
+SpikedWishart(beta, n, p, spikes; scaled=false) = SpikedWishart(beta, n, p, spikes, scaled)
+SpikedWishart(beta, n, p; scaled=false) = SpikedWishart(beta, n, p, [], scaled)
 
 # SAMPLERS
+
+function scaling(d::SpikedWishart)
+    d.scaled ? 1/d.n : 1
+end
 
 function randreduced(d::SpikedWishart)
     if length(d.spikes) <= 1
@@ -33,8 +39,8 @@ function randtridiagonal(d::SpikedWishart)
     # diagonal and off-diagonals of BB'
     dv = Bdv.^2 + [0; Bev.^2]
     ev = Bdv[1:end-1] .* Bev
-
-    SymTridiagonal(dv, ev)
+    
+    SymTridiagonal(dv, ev) * scaling(d)
 end
 
 # Multi-spike version only implemented for beta=1
@@ -57,8 +63,8 @@ function randbanded(d::SpikedWishart)
     end
 
     U[band(r)] .= [rand(Chi(d.p - k + 1)) for k in 1:(d.p-r)]
-
-    Symmetric(U' * U)
+    
+    Symmetric(U' * U) * scaling(d)
 end
 
 function critspikes(d::SpikedWishart)
