@@ -1,7 +1,7 @@
 name = "RandomMatrixDistributions"
 uuid = "af03f0a2-7cbb-11e9-3152-f985fa477d26"
 authors = ["damian-t-p <damian.pavlyshyn@gmail.com>"]
-version = "0.2.0"
+version = "0.3.0"
 
 [deps]
 BandedMatrices = "aae01518-5342-5314-be14-df237901396f"
