@@ -362,10 +362,10 @@ uuid = "189a3867-3050-52da-a836-e630ba90ab69"
 version = "0.2.0"
 
 [[Rmath]]
-deps = ["Random", "Rmath_jll"]
-git-tree-sha1 = "86c5647b565873641538d8f812c04e4c9dbeb370"
+deps = ["BinaryProvider", "Libdl", "Random", "Statistics"]
+git-tree-sha1 = "2bbddcb984a1d08612d0c4abb5b4774883f6fa98"
 uuid = "79098fc4-a85e-5d69-aa6a-4863f24498fa"
-version = "0.6.1"
+version = "0.6.0"
 
 [[Rmath_jll]]
 deps = ["Libdl", "Pkg"]
