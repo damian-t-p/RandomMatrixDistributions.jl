@@ -45,26 +45,42 @@ end
 
 # Multi-spike version only implemented for beta=1
 function randbanded(d::SpikedWishart)
-    @assert d.beta == 1
+    @assert d.beta in [1, 2]
     r = length(d.spikes)
 
-    U = BandedMatrix{Float64}(undef, (d.p, d.p), (0, r))
+    if d.beta == 1
+        U = BandedMatrix{Float64}(undef, (d.p, d.p), (0, r))
+    elseif d.beta == 2
+        U = BandedMatrix{Complex{Float64}}(undef, (d.p, d.p), (0, r))
+    end
 
-    dv = [rand(Chi(d.n - k + 1)) for k in 1:d.p]
+    dv = [rand(Chi(d.beta*(d.n - k + 1)))/sqrt(d.beta) for k in 1:d.p]
     @. dv[1:r] *= sqrt(1 + d.spikes)
 
     U[band(0)] .= dv
     
     for k = 1:(r-1)
-        ev = randn(d.p - k)
+        if d.beta == 1
+            ev = randn(d.p - k)
+        elseif d.beta == 2
+            ev = (randn(d.p - k) + im * randn(d.p-k))/sqrt(2)
+        end
+        
         @. ev[1:(r-k)] *= sqrt(1 + d.spikes[(k+1):end])
 
         U[band(k)] .= ev
     end
 
-    U[band(r)] .= [rand(Chi(d.p - k + 1)) for k in 1:(d.p-r)]
-    
-    Symmetric(U' * U) * scaling(d)
+    U[band(r)] .= [rand(Chi(d.beta*(d.p - k)))/sqrt(d.beta) for k in r:(d.p-1)]
+
+    if d.beta == 1
+        Symmetric(U' * U) * scaling(d)
+    elseif d.beta == 2
+        # The conjugate transpose is done like this rather than with ' because
+        # U'U is not automatically a banded matrix
+        Hermitian(transpose(conj(U)) * U) * scaling(d)
+    end
+        
 end
 
 function critspikes(d::SpikedWishart)
