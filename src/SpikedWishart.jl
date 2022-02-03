@@ -29,8 +29,8 @@ function randtridiagonal(d::SpikedWishart)
     a = d.beta * d.n/2
     
     # diagonal and superdiagonal of B
-    Bdv = [rand(Chi(2*a - d.beta*k)) for k in 0:(d.p-1)]
-    Bev = [rand(Chi(d.beta*(d.p-k))) for k in 1:(d.p-1)]
+    Bdv = [rand(Chi(2*a - d.beta*k))/sqrt(d.beta) for k in 0:(d.p-1)]
+    Bev = [rand(Chi(d.beta*(d.p-k)))/sqrt(d.beta) for k in 1:(d.p-1)]
 
     if length(d.spikes) == 1
         Bdv[1] *= sqrt(1 + d.spikes[1])

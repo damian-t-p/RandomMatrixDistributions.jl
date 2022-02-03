@@ -20,7 +20,7 @@ function randreduced(d::SpikedWigner)
     if length(d.spikes) <= 1
         return randtridiagonal(d)
     else
-        throw(">1 spike not yet implemented for Wigner matrices")
+        return randbanded(d)
     end
 end
 
@@ -37,5 +37,40 @@ function randtridiagonal(d::SpikedWigner)
     SymTridiagonal(dv, ev) * scaling(d)
 end
 
+function randbanded(d::SpikedWigner)
+    @assert d.beta in [1, 2]
+    r = length(d.spikes)
 
+    if d.beta == 1
+        U = BandedMatrix{Float64}(undef, (d.n, d.n), (r, r))
+    elseif d.beta == 2
+        U = BandedMatrix{Complex{Float64}}(undef, (d.n, d.n), (r, r))
+    end
+
+    dv = randn(d.n) * sqrt(2/d.beta)
+    @. dv[1:r] += d.spikes * sqrt(d.n)
+
+    U[band(0)] .= dv 
+    
+    for k = 1:(r-1)
+        if d.beta == 1
+            ev = randn(d.n - k)
+        elseif d.beta == 2
+            ev = (randn(d.n - k) + im * randn(d.n-k))/sqrt(2)
+        end
+
+        U[band(k)] .= ev
+    end
+
+    U[band(r)] .= [rand(Chi(d.beta*(d.n - k)))/sqrt(d.beta) for k in r:(d.n-1)]
+
+    if d.beta == 1
+        Symmetric(U) * scaling(d)
+    elseif d.beta == 2
+        # The conjugate transpose is done like this rather than with ' because
+        # U'U is not automatically a banded matrix
+        Hermitian(U) * scaling(d)
+    end
+        
+end
 
