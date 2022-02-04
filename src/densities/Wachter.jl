@@ -22,7 +22,7 @@ function maximum(d::Wachter)
     ((1 + sqrt(d.gamma1 + d.gamma2 - d.gamma1 * d.gamma2))/(1 - d.gamma2))^2
 end
 
-function pdf(d::Wachter, x)
+function pdf(d::Wachter, x::Real)
     a = minimum(d)
     b = maximum(d)
 

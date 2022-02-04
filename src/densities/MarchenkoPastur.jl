@@ -13,7 +13,7 @@ function maximum(d::MarchenkoPastur)
     (1 + sqrt(d.gamma))^2
 end
 
-function pdf(d::MarchenkoPastur, x)
+function pdf(d::MarchenkoPastur, x::Real)
     lambdamin = minimum(d)
     lambdamax = maximum(d)
 
