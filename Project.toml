@@ -1,7 +1,7 @@
 name = "RandomMatrixDistributions"
 uuid = "af03f0a2-7cbb-11e9-3152-f985fa477d26"
 authors = ["damian-t-p <damian.pavlyshyn@gmail.com>"]
-version = "0.3.0"
+version = "0.4.0"
 
 [deps]
 ApproxFun = "28f2ccd6-bb30-5033-b560-165f7b14dc2f"
