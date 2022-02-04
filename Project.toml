@@ -19,13 +19,13 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 [compat]
 julia = "1.4"
 ApproxFun = "0.11 - 0.13"
-BandedMatrices = "0.16"
+BandedMatrices = "0.15 - 0.16"
 Distributions = "0.19 - 0.25"
 FastGaussQuadrature = "0.4"
 Interpolations = "0.13"
 KrylovKit = "0.5"
-Rmath = "0.7"
-SpecialFunctions = "1.8"
+Rmath = "0.6 - 0.7"
+SpecialFunctions = "0.10, 1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
