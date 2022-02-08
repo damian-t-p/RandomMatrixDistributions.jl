@@ -37,21 +37,23 @@ end
     for beta in [1, 2]
         #println("Testing Spiked Wishart with β = 1")
         s = 8
-        W = SpikedWishart(beta, n, p, [s], scaled = false)
-        λs = randeigvals(W)
         
-        @test length(λs) == p
-        @test eltype(λs) <: Real
+        for W in [SpikedWishart(beta, n, p, [s], scaled = false), SpikedWigner(beta, p, [s], scaled = false)]
+            λs = randeigvals(W)
+            
+            @test length(λs) == p
+            @test eltype(λs) <: Real
 
-        # Check if the maximum spike is reasonable
-        # This tests can fail in principle, but only with negligible probability
-        spikedist = covspikedist(W)
-        μ = mean(spikedist)[end]
-        σ = sqrt(var(spikedist)[end])
+            # Check if the maximum spike is reasonable
+            # This tests can fail in principle, but only with negligible probability
+            spikedist = supercrit_dist(W)
+            μ = mean(spikedist)[end]
+            σ = sqrt(var(spikedist)[end])
 
-        @test abs(maximum(λs) - μ)/σ < 4
+            @test abs(maximum(λs) - μ)/σ < 4
 
-        @test all(randeigstat(W, eigmax, 10) .> 0)
+            @test all(randeigstat(W, eigmax, 10) .> 0)
+        end
     end
 
 end
@@ -64,21 +66,22 @@ end
     for beta in [1, 2]
         #println("Testing Spiked Wishart with β = 1")
         s = 8
-        W = SpikedWishart(beta, n, p, [0.1, 2, 4, s], scaled = true)
-        λs = randeigvals(W)
-        
-        @test length(λs) == p
-        @test eltype(λs) <: Real
+        for W in [SpikedWishart(beta, n, p, [0.1, 2, 4, s], scaled = true), SpikedWigner(beta, p, [0.1, 2, 4, s], scaled = true)]
+            λs = randeigvals(W)
+            
+            @test length(λs) == p
+            @test eltype(λs) <: Real
 
-        # Check if the maximum spike is reasonable
-        # This tests can fail in principle, but only with negligible probability
-        spikedist = covspikedist(W)
-        μ = mean(spikedist)[end]
-        σ = sqrt(var(spikedist)[end])
+            # Check if the maximum spike is reasonable
+            # This tests can fail in principle, but only with negligible probability
+            spikedist = supercrit_dist(W)
+            μ = mean(spikedist)[end]
+            σ = sqrt(var(spikedist)[end])
 
-        @test abs(maximum(λs) - μ)/σ < 4
+            @test abs(maximum(λs) - μ)/σ < 4
 
-        @test all(randeigstat(W, eigmax, 10) .> 0)
+            @test all(randeigstat(W, eigmax, 10) .> 0)
+        end
     end
 
 end

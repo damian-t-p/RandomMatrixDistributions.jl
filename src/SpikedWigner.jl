@@ -74,3 +74,28 @@ function randbanded(d::SpikedWigner)
         
 end
 
+function supercrit_spikes(d::SpikedWigner)
+    d.spikes[d.spikes .> 1]
+end
+
+# For beta = 1, see Feral & Peche 2006 Theorem 1.1
+# For beta = 2, see Peche Theorem 1.2
+function supercrit_dist(d::SpikedWigner)
+
+    cspikes = supercrit_spikes(d)
+    
+    if !allunique(cspikes)
+        throw("Supercritical spikes with multiplicity > 1 not supported")
+    end
+
+    mu = @. cspikes + 1/cspikes
+    sigma = @. sqrt(2/d.beta) * sqrt(cspikes^2 - 1) / (cspikes * sqrt(d.n))
+
+    if d.scaled == false
+        mu *= sqrt(d.n)
+        sigma *= sqrt(d.n)
+    end
+    
+    MvNormal(mu, Diagonal(sigma .^ 2))
+end
+

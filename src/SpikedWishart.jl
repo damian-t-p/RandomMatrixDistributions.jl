@@ -1,4 +1,4 @@
-export SpikedWishart, covspikedist
+export SpikedWishart, supercrit_dist
 
 struct SpikedWishart <: ContinuousMatrixDistribution
     beta::Integer
@@ -83,7 +83,7 @@ function randbanded(d::SpikedWishart)
         
 end
 
-function critspikes(d::SpikedWishart)
+function supercrit_spikes(d::SpikedWishart)
     gamma = d.p/d.n
     d.spikes[d.spikes .> sqrt(gamma)]
 end
@@ -91,9 +91,14 @@ end
 
 # For beta = 1, see Paul 2007 Theorem 3
 # For beta = 2, see BBP 2005 Theorem 1.1(b)
-function covspikedist(d::SpikedWishart)
+function supercrit_dist(d::SpikedWishart)
+
     gamma = d.p/d.n
-    cspikes = critspikes(d)
+    cspikes = supercrit_spikes(d)
+
+    if !allunique(cspikes)
+        throw("Supercritical spikes with multiplicity > 1 not supported")
+    end
     
     l = 1 .+ cspikes
     
