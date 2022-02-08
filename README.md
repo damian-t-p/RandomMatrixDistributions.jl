@@ -4,13 +4,13 @@ RandomMatrixDistributions.jl
 [![Build Status](https://github.com/damian-t-p/RandomMatrixDistributions.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/damian-t-p/RandomMatrixDistributions.jl/actions?query=workflow)
 [![codecov](https://codecov.io/gh/damian-t-p/RandomMatrixDistributions.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/damian-t-p/RandomMatrixDistributions.jl)
 
-A Julia package containing `Distribution.jl`-type specifications for various distributions arising from random matrix theory.
+A Julia package containing `Distributions.jl`-type specifications for various distributions arising from random matrix theory.
 
 # Currently implemented distributions
 
 ## Matrix distributions
 
-* `SpikedWigner(beta, n, spikes; scaled=false)`: Wigner distribution with an added rank-*r* matrix with eigenvalues (*s*<sub>1</sub>, ... , *s*<sub>r</sub>) * sqrt(*n*).
+* `SpikedWigner(beta, n, spikes; scaled=false)`: Wigner distribution with an added spike matrix
 
 	`spikes` is an array `[s1, ..., sr]` such that the diagonal matrix with diagonal sqrt(n)(*s*<sub>1</sub>, ... , *s*<sub>r</sub>, 0, ..., 0) is added to a white Wigner matrix.
 

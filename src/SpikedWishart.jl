@@ -88,6 +88,9 @@ function critspikes(d::SpikedWishart)
     d.spikes[d.spikes .> sqrt(gamma)]
 end
 
+
+# For beta = 1, see Paul 2007 Theorem 3
+# For beta = 2, see BBP 2005 Theorem 1.1(b)
 function covspikedist(d::SpikedWishart)
     gamma = d.p/d.n
     cspikes = critspikes(d)
@@ -95,7 +98,12 @@ function covspikedist(d::SpikedWishart)
     l = 1 .+ cspikes
     
     mu = @. l * (1 + gamma/cspikes)
-    sigma = @. l * sqrt(gamma * 2 * (1 - gamma/cspikes^2))
+    sigma = @. l * sqrt(gamma * (2/d.beta) * (1 - gamma/cspikes^2)) / sqrt(d.n)
 
-    MvNormal(mu, sigma)
+    if d.scaled == false
+        mu *= d.n
+        sigma *= d.n
+    end
+    
+    MvNormal(mu, Diagonal(sigma .^ 2))
 end
