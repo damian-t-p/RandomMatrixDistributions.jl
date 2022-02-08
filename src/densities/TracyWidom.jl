@@ -7,6 +7,7 @@ export TracyWidom
 
 struct TracyWidom <: ContinuousUnivariateDistribution
     beta::Integer
+    TracyWidom(beta) = beta in [1, 2, 4] ? new(beta) : error("Beta must be 1, 2 or 4")
 end
 
 
