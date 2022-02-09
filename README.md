@@ -30,7 +30,7 @@ Normal entries in Gaussian ensembles are scaled to have variance 1.
 The package implements the following types:
 * `MarchenkoPastur(gamma)`: Limiting empirical spectral density of a real white Wishart matrix with *p*/*n* -> *gamma* as long as 0 < *gamma* < 1.
 * `TracyWidom(beta)`: Limiting distribution of the maximum eigenvalue of many random matrix ensembles with Dyson parameter beta [3].
-* `Wachter(gamma1, gamma2)`: Limiting empirical spectral density of *S*<sub>1</sub> *S*<sub>2</sub><sup>-1</sup>. Here *S*<sub>1</sub> and *S*<sub>2</sub>$ are sample covariance matrices with *n*<sub>1</sub>/*p* -> *gamma*<sub>1</sub> and *n*<sub>2</sub>/*p* -> *gamma*<sub>2</sub>.
+* `Wachter(gamma1, gamma2)`: Limiting empirical spectral density of *S*<sub>1</sub> *S*<sub>2</sub><sup>-1</sup>. Here *S*<sub>1</sub> and *S*<sub>2</sub> are sample covariance matrices with *n*<sub>1</sub>/*p* -> *gamma*<sub>1</sub> and *n*<sub>2</sub>/*p* -> *gamma*<sub>2</sub>.
 
 It also implements the following functions for computing eigenvalue distributions:
 * `supercrit_dist(E)`: Approximate distribution of the supercritical eigenvalues of a matrix drawn from the ensemble E.

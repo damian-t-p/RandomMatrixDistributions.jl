@@ -11,7 +11,7 @@ A diagonal matrix with entries given by `spikes` multiplied by `√n` is added t
 
 If `scaled == true`, then the resulting matrix is divided by `√n` so that its bulk distribution converges to the semicircle law supported on [-2, 2].
 """
-struct SpikedWigner <: ContinuousMatrixDistribution
+struct SpikedWigner <: Distribution{Matrixvariate, ComplexContinuous}
     beta::Integer
     n::Integer
     spikes::Vector{Float64}
@@ -29,7 +29,38 @@ end
 
 Base.size(d::SpikedWigner) = (d.n, d.n)
 
+function eltype(d::SpikedWigner)
+    if d.beta == 1
+        Float64
+    elseif d.beta == 2
+        ComplexF64
+    else
+        error("Wigner matrices only instantiated for β = 1, 2")
+    end
+end
+
 # SAMPLERS
+
+function _rand!(rng::AbstractRNG, d::SpikedWigner, x::DenseMatrix{T}) where {T <: Number}
+    if d.beta == 1
+        A = randn(rng, d.n, d.n)
+    elseif d.beta == 2
+        A = (randn(rng, d.n, d.n) + im * randn(rng, d.n, d.n))/sqrt(2)
+    else
+        error("Wigner matrices only instantiated for β = 1, 2")
+    end
+
+    x[:] = (A + A')/sqrt(2)
+
+    for (i, spike) in enumerate(d.spikes)
+        x[i,i] += sqrt(d.n) * spike
+    end
+    
+    x *= scaling(d)
+
+    return x
+    
+end
 
 function randreduced(rng::AbstractRNG, d::SpikedWigner)
     if length(d.spikes) <= 1

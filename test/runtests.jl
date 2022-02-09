@@ -4,6 +4,12 @@ using Test
 
 @testset "RandomMatrixDistributions" begin
     seed!(1)
-    include("MatrixSamplers.jl")
-    include("Densities.jl")
+
+    @testset "MatrixSamplers" begin
+        include("MatrixSamplers.jl")
+    end
+    
+    @testset "Densities" begin
+        include("Densities.jl")
+    end
 end

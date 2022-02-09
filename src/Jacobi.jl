@@ -11,7 +11,7 @@ then E(E + H)⁻¹ has `Jacobi(β, n₁, n₂, p)` distribution.
 If λᵢ are the eigenvalues of EH⁻¹ and μᵢ are the Jacobi eigenvalues,
 then μᵢ = λᵢ/(1 + λᵢ) and λᵢ = μᵢ/(1 - μᵢ).
 """
-struct Jacobi <: ContinuousMatrixDistribution
+struct Jacobi <: Distribution{Matrixvariate, ComplexContinuous}
     beta::Integer
     n1::Integer
     n2::Integer
@@ -21,6 +21,27 @@ end
 # PROPERTIES
 
 Base.size(d::Jacobi) = (d.p, d.p)
+
+function eltype(d::Jacobi)
+    if d.beta == 1
+        Float64
+    elseif d.beta == 2
+        ComplexF64
+    else
+        error("Jacobi matrices only instantiated for β = 1, 2")
+    end
+end
+
+function _rand!(rng::AbstractRNG, d::Jacobi, x::DenseMatrix{T}) where {T <: Number}
+
+    E = rand(rng, SpikedWishart(d.beta, d.n1, d.p))
+    H = rand(rng, SpikedWishart(d.beta, d.n2, d.p))
+
+    x[:] = E * inv(E + H)
+    
+    return x
+    
+end
 
 # SAMPLERS
 

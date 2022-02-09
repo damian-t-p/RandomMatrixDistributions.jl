@@ -11,7 +11,7 @@ If Λ is a diagonal matrix whose entries are `√(1 .+ spikes)`, then ΛXX†Λ 
 
 If `scaled == true`, then the resulting matrix is divided by `p` so that its bulk distribution converges to the Marchenko-Pastur law.
 """
-struct SpikedWishart <: ContinuousMatrixDistribution
+struct SpikedWishart <: Distribution{Matrixvariate, ComplexContinuous}
     beta::Integer
     n::Integer
     p::Integer
@@ -30,7 +30,36 @@ end
 
 Base.size(d::SpikedWishart) = (d.p, d.p)
 
+function eltype(d::SpikedWishart)
+    if d.beta == 1
+        Float64
+    elseif d.beta == 2
+        ComplexF64
+    else
+        error("Wishart matrices only instantiated for β = 1, 2")
+    end
+end
+
 # SAMPLERS
+
+function _rand!(rng::AbstractRNG, d::SpikedWishart, x::DenseMatrix{T}) where {T <: Number}
+    if d.beta == 1
+        A = randn(rng, d.p, d.n)
+    elseif d.beta == 2
+        A = (randn(rng, d.p, d.n) + im * randn(rng, d.p, d.n))/sqrt(2)
+    else
+        error("Wishart matrices only instantiated for β = 1, 2")
+    end
+
+    for (i, spike) in enumerate(d.spikes)
+        A[i,:] *= sqrt(1 + spike)
+    end
+    
+    x[:] = (A * A') * scaling(d)
+    
+    return x
+    
+end
 
 function randreduced(rng::AbstractRNG, d::SpikedWishart)
     if length(d.spikes) <= 1
