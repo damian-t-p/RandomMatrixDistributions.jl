@@ -1,9 +1,9 @@
 export Wachter
 
 """
-    Wachter(γ₁, γ₂)
+    Wachter(γ₁::Real, γ₂::Real)
 
-Wachter Distribution, where 0 ≤ `γ₂` < 1.
+Wachter distribution, where 0 ≤ `γ₂` < 1.
 
 Let Σ₁ and Σ₂ be p×p covariance matrices of n₁ and n₂ standard normal observations respectively.
 

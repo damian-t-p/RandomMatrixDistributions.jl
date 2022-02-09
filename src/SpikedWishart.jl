@@ -1,7 +1,7 @@
-export SpikedWishart, supercrit_dist
+export SpikedWishart
 
 """
-    SpikedWishart(β, n, p[, spikes, scaled=false)
+    SpikedWishart(β::Int, n::Int, p::Int[, spikes::Vector{Float64}, scaled::Bool=false)
 
 Distribution of a p×p spiked Wishart matrix.
 
@@ -15,7 +15,7 @@ struct SpikedWishart <: ContinuousMatrixDistribution
     beta::Integer
     n::Integer
     p::Integer
-    spikes::Array{Float64, 1}
+    spikes::Vector{Float64}
     scaled::Bool
 end
 

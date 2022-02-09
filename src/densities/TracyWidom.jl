@@ -6,7 +6,7 @@ using Interpolations
 export TracyWidom
 
 """
-    TracyWidom(β)
+    TracyWidom(β::Int)
 
 Tracy-Widom distribution with Dyson parameter β.
 

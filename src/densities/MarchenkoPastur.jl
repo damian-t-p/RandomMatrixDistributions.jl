@@ -1,9 +1,9 @@
 export MarchenkoPastur
 
 """
-    MarchenkoPastur(γ)
+    MarchenkoPastur(γ::Real)
 
-Marchenko-Pastur Distribution, where 0 < `γ` ≤ 1.
+Marchenko-Pastur distribution, where 0 < `γ` ≤ 1.
 
 The limiting spectral distribution of a p×p covariance matrix of n standard normal observations, where p/n → γ.
 """

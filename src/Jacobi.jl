@@ -1,7 +1,7 @@
 export Jacobi
 
 """
-    Jacobi(β, n₁, n₂, p)
+    Jacobi(β::Int, n₁::Int, n₂::Int, p::Int)
 
 Distribution of a p×p Jacobi matrix.
 

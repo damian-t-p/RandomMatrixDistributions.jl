@@ -1,7 +1,7 @@
 export SpikedWigner
 
 """
-    SpikedWigner(β, n[, spikes, scaled=false])
+    SpikedWigner(β::Int, n::Int[, spikes::Vector{Float64}, scaled::Bool=false])
 
 Distribution on an n×n spiked Gaussian Wigner matrix.
 
@@ -14,7 +14,7 @@ If `scaled == true`, then the resulting matrix is divided by `√n` so that its 
 struct SpikedWigner <: ContinuousMatrixDistribution
     beta::Integer
     n::Integer
-    spikes::Array{Float64, 1}
+    spikes::Vector{Float64}
     scaled::Bool
 end
 

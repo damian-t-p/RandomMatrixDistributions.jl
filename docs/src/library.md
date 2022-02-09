@@ -1,15 +1,23 @@
 # Library
 
-```@contents
+```@index
 Pages = ["library.md"]
 ```
 
-## Random Matrix ensembles
+## Random matrix ensembles
 
 ```@docs
 Jacobi
 SpikedWigner
 SpikedWishart
+```
+
+## Methods for random matrix ensembles
+
+```@docs
+randeigvals
+randeigstat
+supercrit_dist
 ```
 
 ## Limiting eigenvalue densities

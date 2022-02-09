@@ -1,7 +1,5 @@
 module RandomMatrixDistributions
 
-#import RandomMatrices
-
 using Random, Distributions
 using LinearAlgebra
 using BandedMatrices
@@ -16,7 +14,7 @@ import Distributions: ContinuousUnivariateDistribution,
     cdf, pdf, entropy, insupport, mean, median, modes, kurtosis, skewness, std, var, moment
 
 
-export randeigvals, randeigstat,
+export randeigvals, randeigstat, supercrit_dist
     minimum, maximum, quantile
     cdf, pdf, entropy, insupport, mean, median, modes, kurtosis, skewness, std, var, moment,
     eigmax
@@ -24,16 +22,43 @@ export randeigvals, randeigstat,
 
 # Generic eigenvalue sampling functions
 
-function randeigvals(d)
+"""
+    randeigvals(d::ContinuousMatrixDistribution)
+
+Sample a vector of eigenvalues of a matrix drawn from the matrix ensemble `d`.
+"""
+function randeigvals(d::ContinuousMatrixDistribution)
     eigvals(randreduced(d))
 end
 
-function randeigstat(d, eigstat, nsims::Int)
-    statvals = Array{Float64, 1}(undef, nsims)
-    for i in 1:nsims
+"""
+    randeigstat(d::ContinuousMatrixDistribution, eigstat::Function, n::Int)
+
+Sample `n` realisations of the eigenvalue statistic `eigstat` evaluated at a matrices drawn from the ensemble `d`.
+
+`eigstat` is a function of a square matrix argument whose value depends only on the eigenvalues of that matrix.
+
+# Usage
+
+```julia
+rangeigstat(SpikedWigner(2, 50), eigmax, 100)
+```
+"""
+function randeigstat(d::ContinuousMatrixDistribution, eigstat::Function, n::Int)
+    statvals = Array{Float64, 1}(undef, n)
+    for i in 1:n
         statvals[i] = eigstat(randreduced(d))
     end
     statvals
+end
+
+
+"""
+    supercrit_dist(d::ContinuousMatrixDistribution)
+
+Compute the approximate joint distribution of the supercritical eigenvalues of the ensemble `d`.
+"""
+function supercrit_dist(d::ContinuousMatrixDistribution)
 end
 
 include("BandedHelpers.jl")
