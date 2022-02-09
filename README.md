@@ -1,6 +1,6 @@
 RandomMatrixDistributions.jl
 ============================
-
+[![docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://damian-t-p.github.io/RandomMatrixDistributions.jl/dev/)
 [![Build Status](https://github.com/damian-t-p/RandomMatrixDistributions.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/damian-t-p/RandomMatrixDistributions.jl/actions?query=workflow)
 [![codecov](https://codecov.io/gh/damian-t-p/RandomMatrixDistributions.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/damian-t-p/RandomMatrixDistributions.jl)
 
