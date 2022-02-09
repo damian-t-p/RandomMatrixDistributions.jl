@@ -18,17 +18,23 @@ struct Jacobi <: ContinuousMatrixDistribution
     p::Integer
 end
 
-function randreduced(d::Jacobi)
-    randtridiagonal(d)
+# PROPERTIES
+
+Base.size(d::Jacobi) = (d.p, d.p)
+
+# SAMPLERS
+
+function randreduced(rng::AbstractRNG, d::Jacobi)
+    randtridiagonal(rng, d)
 end
 
-function randtridiagonal(d::Jacobi)
+function randtridiagonal(rng::AbstractRNG, d::Jacobi)
     
     a = d.beta/2 * (d.n1 - d.p + 1) - 1;
     b = d.beta/2 * (d.n2 - d.p + 1) - 1;
     
-    alphaeven = [2*rand(Beta((2*d.p - k - 2)*d.beta/4 + a + 1, (2*d.p - k - 2) * d.beta/4 + b + 1)) - 1 for k in 0:(2 * d.p-2) if k%2 == 0]
-    alphaodd = [2*rand(Beta((2*d.p - k - 1)*d.beta/4, (2*d.p - k - 3) * d.beta/4 + a + b + 2)) - 1 for k in 0:(2 * d.p-2) if k%2 == 1]
+    alphaeven = [2*rand(rng, Beta((2*d.p - k - 2)*d.beta/4 + a + 1, (2*d.p - k - 2) * d.beta/4 + b + 1)) - 1 for k in 0:(2 * d.p-2) if k%2 == 0]
+    alphaodd = [2*rand(rng, Beta((2*d.p - k - 1)*d.beta/4, (2*d.p - k - 3) * d.beta/4 + a + b + 2)) - 1 for k in 0:(2 * d.p-2) if k%2 == 1]
 
     alphaevenleft = [alphaeven; 0]
     alphaevenright = [0; alphaeven]

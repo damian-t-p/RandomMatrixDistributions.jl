@@ -1,5 +1,6 @@
 using RandomMatrixDistributions
 using Distributions
+using Random
 using Test
 
 @testset "WhiteSamplers" begin
@@ -67,7 +68,8 @@ end
         #println("Testing Spiked Wishart with β = 1")
         s = 8
         for W in [SpikedWishart(beta, n, p, [0.1, 2, 4, s], scaled = true), SpikedWigner(beta, p, [0.1, 2, 4, s], scaled = true)]
-            λs = randeigvals(W)
+
+            λs = rand(EigvalDist(W))
             
             @test length(λs) == p
             @test eltype(λs) <: Real
@@ -85,3 +87,50 @@ end
     end
 
 end
+
+@testset "RandomnessReproducibility" begin
+
+    n = 10
+    p = 5
+
+    beta = 1
+    
+    # white
+    s = 8
+    for W in [
+        SpikedWishart(beta, n, p, scaled = true),
+        SpikedWigner(beta, p, scaled = true),
+        Jacobi(beta, n, n, p)]
+
+        λ1 = rand(MersenneTwister(0), EigvalDist(W))
+        λ2 = rand(MersenneTwister(0), EigvalDist(W))
+        
+        @test λ1 ≈ λ2
+    end
+    
+    # tridiagonal
+    s = 8
+    for W in [
+        SpikedWishart(beta, n, p, [s], scaled = true),
+        SpikedWigner(beta, p, [s], scaled = true)]
+
+        λ1 = rand(MersenneTwister(0), EigvalDist(W))
+        λ2 = rand(MersenneTwister(0), EigvalDist(W))
+        
+        @test λ1 ≈ λ2
+    end
+    
+    # banded
+    s = 8
+    for W in [
+        SpikedWishart(beta, n, p, [0.1, 2, 4, s], scaled = true),
+        SpikedWigner(beta, p, [0.1, 2, 4, s], scaled = true)]
+
+        λ1 = rand(MersenneTwister(0), EigvalDist(W))
+        λ2 = rand(MersenneTwister(0), EigvalDist(W))
+        
+        @test λ1 ≈ λ2
+    end
+    
+end
+

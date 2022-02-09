@@ -22,26 +22,30 @@ end
 SpikedWishart(beta, n, p, spikes; scaled=false) = SpikedWishart(beta, n, p, spikes, scaled)
 SpikedWishart(beta, n, p; scaled=false) = SpikedWishart(beta, n, p, [], scaled)
 
-# SAMPLERS
+# PROPERTIES
 
 function scaling(d::SpikedWishart)
     d.scaled ? 1/d.n : 1
 end
 
-function randreduced(d::SpikedWishart)
+Base.size(d::SpikedWishart) = (d.p, d.p)
+
+# SAMPLERS
+
+function randreduced(rng::AbstractRNG, d::SpikedWishart)
     if length(d.spikes) <= 1
-        return randtridiagonal(d)
+        return randtridiagonal(rng, d)
     else
-        return randbanded(d)
+        return randbanded(rng, d)
     end
 end
 
-function randtridiagonal(d::SpikedWishart)
+function randtridiagonal(rng::AbstractRNG, d::SpikedWishart)
     a = d.beta * d.n/2
     
     # diagonal and superdiagonal of B
-    Bdv = [rand(Chi(2*a - d.beta*k))/sqrt(d.beta) for k in 0:(d.p-1)]
-    Bev = [rand(Chi(d.beta*(d.p-k)))/sqrt(d.beta) for k in 1:(d.p-1)]
+    Bdv = [rand(rng, Chi(2*a - d.beta*k))/sqrt(d.beta) for k in 0:(d.p-1)]
+    Bev = [rand(rng, Chi(d.beta*(d.p-k)))/sqrt(d.beta) for k in 1:(d.p-1)]
 
     if length(d.spikes) == 1
         Bdv[1] *= sqrt(1 + d.spikes[1])
@@ -55,7 +59,7 @@ function randtridiagonal(d::SpikedWishart)
 end
 
 # Multi-spike version only implemented for beta=1
-function randbanded(d::SpikedWishart)
+function randbanded(rng::AbstractRNG, d::SpikedWishart)
     @assert d.beta in [1, 2]
     r = length(d.spikes)
 
@@ -65,16 +69,16 @@ function randbanded(d::SpikedWishart)
         U = BandedMatrix{Complex{Float64}}(undef, (d.p, d.p), (0, r))
     end
 
-    dv = [rand(Chi(d.beta*(d.n - k + 1)))/sqrt(d.beta) for k in 1:d.p]
+    dv = [rand(rng, Chi(d.beta*(d.n - k + 1)))/sqrt(d.beta) for k in 1:d.p]
     @. dv[1:r] *= sqrt(1 + d.spikes)
 
     U[band(0)] .= dv
     
     for k = 1:(r-1)
         if d.beta == 1
-            ev = randn(d.p - k)
+            ev = randn(rng, d.p - k)
         elseif d.beta == 2
-            ev = (randn(d.p - k) + im * randn(d.p-k))/sqrt(2)
+            ev = (randn(rng, d.p - k) + im * randn(rng, d.p-k))/sqrt(2)
         end
         
         @. ev[1:(r-k)] *= sqrt(1 + d.spikes[(k+1):end])
@@ -82,7 +86,7 @@ function randbanded(d::SpikedWishart)
         U[band(k)] .= ev
     end
 
-    U[band(r)] .= [rand(Chi(d.beta*(d.p - k)))/sqrt(d.beta) for k in r:(d.p-1)]
+    U[band(r)] .= [rand(rng, Chi(d.beta*(d.p - k)))/sqrt(d.beta) for k in r:(d.p-1)]
 
     if d.beta == 1
         Symmetric(U' * U) * scaling(d)

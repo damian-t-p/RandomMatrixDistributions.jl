@@ -4,9 +4,10 @@
 Pages = ["library.md"]
 ```
 
-## Random matrix ensembles
+## Distributions
 
 ```@docs
+EigvalDist
 Jacobi
 SpikedWigner
 SpikedWishart

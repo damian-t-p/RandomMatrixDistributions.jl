@@ -7,15 +7,18 @@ using KrylovKit
 
 import LinearAlgebra: eigmax
 
-import Distributions: minimum, maximum, quantile
+import Base: length, size
 
 import Distributions: ContinuousUnivariateDistribution,
     ContinuousMatrixDistribution,
-    cdf, pdf, entropy, insupport, mean, median, modes, kurtosis, skewness, std, var, moment
+    cdf, pdf, entropy, insupport, mean, median, modes, kurtosis, skewness, std, var, moment,
+    minimum, maximum, quantile,
+    _rand!
 
+import Random: rand
 
-export randeigvals, randeigstat, supercrit_dist
-    minimum, maximum, quantile
+export randeigvals, randeigstat, supercrit_dist,
+    minimum, maximum, quantile,
     cdf, pdf, entropy, insupport, mean, median, modes, kurtosis, skewness, std, var, moment,
     eigmax
 
@@ -23,16 +26,18 @@ export randeigvals, randeigstat, supercrit_dist
 # Generic eigenvalue sampling functions
 
 """
-    randeigvals(d::ContinuousMatrixDistribution)
+    randeigvals([rng::AbstractRNG, ]d::ContinuousMatrixDistribution)
 
 Sample a vector of eigenvalues of a matrix drawn from the matrix ensemble `d`.
 """
-function randeigvals(d::ContinuousMatrixDistribution)
-    eigvals(randreduced(d))
+function randeigvals(rng::AbstractRNG, d::ContinuousMatrixDistribution)
+    eigvals(randreduced(rng, d))
 end
 
+randeigvals(d::ContinuousMatrixDistribution) = randeigvals(Random.default_rng(), d)
+
 """
-    randeigstat(d::ContinuousMatrixDistribution, eigstat::Function, n::Int)
+    randeigstat([rng::AbstractRNG, ]d::ContinuousMatrixDistribution, eigstat::Function, n::Int)
 
 Sample `n` realisations of the eigenvalue statistic `eigstat` evaluated at a matrices drawn from the ensemble `d`.
 
@@ -44,29 +49,29 @@ Sample `n` realisations of the eigenvalue statistic `eigstat` evaluated at a mat
 rangeigstat(SpikedWigner(2, 50), eigmax, 100)
 ```
 """
-function randeigstat(d::ContinuousMatrixDistribution, eigstat::Function, n::Int)
+function randeigstat(rng::AbstractRNG, d::ContinuousMatrixDistribution, eigstat::Function, n::Int)
     statvals = Array{Float64, 1}(undef, n)
     for i in 1:n
-        statvals[i] = eigstat(randreduced(d))
+        statvals[i] = eigstat(randreduced(rng, d))
     end
     statvals
 end
 
+randeigstat(d::ContinuousMatrixDistribution, eigstat::Function, n::Int) = randeigstat(Random.default_rng(), d, eigstat, n)
 
 """
     supercrit_dist(d::ContinuousMatrixDistribution)
 
 Compute the approximate joint distribution of the supercritical eigenvalues of the ensemble `d`.
 """
-function supercrit_dist(d::ContinuousMatrixDistribution)
-end
+supercrit_dist(d::ContinuousMatrixDistribution)
 
 include("BandedHelpers.jl")
 
 include("SpikedWigner.jl")
 include("SpikedWishart.jl")
-
 include("Jacobi.jl")
+include("EigvalDist.jl")
 
 include("densities/MarchenkoPastur.jl")
 include("densities/TracyWidom.jl")
