@@ -1,5 +1,16 @@
 export SpikedWishart, supercrit_dist
 
+"""
+    SpikedWishart(β, n, p[, spikes, scaled=false)
+
+Distribution of a p×p spiked Wishart matrix.
+
+If X is a p×n matrix with independent real, complex or quaternion standard Gaussian entries, depending on whether β = 1, 2 or 4, then XX† has a `Wishart(β, n, p)` distribution.
+
+If Λ is a diagonal matrix whose entries are `√(1 .+ spikes)`, then ΛXX†Λ has a `SpikedWishart(β, n, p, spikes)` distribution.
+
+If `scaled == true`, then the resulting matrix is divided by `p` so that its bulk distribution converges to the Marchenko-Pastur law.
+"""
 struct SpikedWishart <: ContinuousMatrixDistribution
     beta::Integer
     n::Integer
@@ -103,7 +114,7 @@ function supercrit_dist(d::SpikedWishart)
     l = 1 .+ cspikes
     
     mu = @. l * (1 + gamma/cspikes)
-    sigma = @. l * sqrt(gamma * (2/d.beta) * (1 - gamma/cspikes^2)) / sqrt(d.n)
+    sigma = @. sqrt(2/d.beta) * l * sqrt(gamma  * (1 - gamma/cspikes^2)) / sqrt(d.n)
 
     if d.scaled == false
         mu *= d.n

@@ -5,6 +5,13 @@ using Interpolations
 
 export TracyWidom
 
+"""
+    TracyWidom(β)
+
+Tracy-Widom distribution with Dyson parameter β.
+
+The limiting distribution of the largest eigenvalue of a GOE (β = 1), GUE (β = 2) or GSE (β = 4) matrix.
+"""
 struct TracyWidom <: ContinuousUnivariateDistribution
     beta::Integer
     TracyWidom(beta) = beta in [1, 2, 4] ? new(beta) : error("Beta must be 1, 2 or 4")

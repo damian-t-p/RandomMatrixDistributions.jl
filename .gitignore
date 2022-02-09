@@ -8,3 +8,6 @@
 /auto
 /readme-bibliography
 /Manifest.toml
+
+docs/build/
+docs/build

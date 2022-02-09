@@ -1,12 +1,14 @@
 export Wachter
 
 """
-Wachter Distribution
+    Wachter(γ₁, γ₂)
 
-Let Σ<sub>1</sub> be Σ<sub>2</sub> pxp covariance matrices of n<sub>1</sub> and n<sub>2</sub> standard normal observations respectively.
+Wachter Distribution, where 0 ≤ `γ₂` < 1.
 
-If p/n<sub>1</sub> → γ<sub>1</sub> and p/n<sub>2</sub> → γ<sub>2</sub>, then Σ<sub>1</sub>Σ<sub>2</sub><sup>-1</sup> has a limiting spectral
-distribution of Wachter(γ<sub>1</sub>, γ<sub>2</sub>).
+Let Σ₁ and Σ₂ be p×p covariance matrices of n₁ and n₂ standard normal observations respectively.
+
+If p/n₁ → γ₁ and p/n₂ → γ₂, then Σ₁ Σ₂⁻¹ has a limiting spectral
+distribution of `Wachter(γ₁, γ₂)`.
 """
 struct Wachter <: ContinuousUnivariateDistribution
     gamma1::Real

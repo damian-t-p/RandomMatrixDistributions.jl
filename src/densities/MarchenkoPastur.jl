@@ -1,5 +1,12 @@
 export MarchenkoPastur
 
+"""
+    MarchenkoPastur(γ)
+
+Marchenko-Pastur Distribution, where 0 < `γ` ≤ 1.
+
+The limiting spectral distribution of a p×p covariance matrix of n standard normal observations, where p/n → γ.
+"""
 struct MarchenkoPastur <: ContinuousUnivariateDistribution
     gamma::Real
     MarchenkoPastur(gamma) = 0 < gamma <= 1 ? new(gamma) : error("Gamma must be in (0, 1]")

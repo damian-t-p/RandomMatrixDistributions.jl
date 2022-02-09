@@ -1,5 +1,16 @@
 export SpikedWigner
 
+"""
+    SpikedWigner(β, n[, spikes, scaled=false])
+
+Distribution on an n×n spiked Gaussian Wigner matrix.
+
+Wigner matrices are Hermitian with independent real, complex or quaternion standard Gaussian entries depending on whether β = 1, 2 or 4.
+
+A diagonal matrix with entries given by `spikes` multiplied by `√n` is added to produce the spiked Wigner matrix.
+
+If `scaled == true`, then the resulting matrix is divided by `√n` so that its bulk distribution converges to the semicircle law supported on [-2, 2].
+"""
 struct SpikedWigner <: ContinuousMatrixDistribution
     beta::Integer
     n::Integer

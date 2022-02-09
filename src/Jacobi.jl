@@ -1,13 +1,15 @@
 export Jacobi
 
 """
-Jacobi Distribution
+    Jacobi(β, n₁, n₂, p)
 
-If E ~ Wishart<sub>p</sub>(I, n<sub>1</sub>) and H ~ Wishart<sub>p</sub>(I, n<sub>2</sub>) are independent,
-then E(E + H)<sup>-1</sup> has Jacobi(n<sub>1</sub>, n<sub>2</sub>, p) distribution.
+Distribution of a p×p Jacobi matrix.
 
-If λ<sub>i</sub> are the eigenvalues of EH<sup>-1</sup> and μ<sub>i</sub> are the Jacobi eigenvalues,
-then μ<sub>i</sub> = λ<sub>i</sub>/(1 + λ<sub>i</sub>) and  λ<sub>i</sub> = μ<sub>i</sub>/(1 - μ<sub>i</sub>)
+If E ~ Wishartₚ(I, n₁) and H ~ Wishartₚ(I, n₂) are independent with Dyson parameter β,
+then E(E + H)⁻¹ has `Jacobi(β, n₁, n₂, p)` distribution.
+
+If λᵢ are the eigenvalues of EH⁻¹ and μᵢ are the Jacobi eigenvalues,
+then μᵢ = λᵢ/(1 + λᵢ) and λᵢ = μᵢ/(1 - μᵢ).
 """
 struct Jacobi <: ContinuousMatrixDistribution
     beta::Integer
