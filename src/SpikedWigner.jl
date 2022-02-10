@@ -39,6 +39,35 @@ function eltype(d::SpikedWigner)
     end
 end
 
+function supercrit_spikes(d::SpikedWigner)
+    d.spikes[d.spikes .> 1]
+end
+
+# RELATED DISTRIBUTIONS
+
+bulk_dist(d::SpikedWigner) = Semicircle(2)
+
+# For beta = 1, see Feral & Peche 2006 Theorem 1.1
+# For beta = 2, see Peche Theorem 1.2
+function supercrit_dist(d::SpikedWigner)
+
+    cspikes = supercrit_spikes(d)
+    
+    if !allunique(cspikes)
+        throw("Supercritical spikes with multiplicity > 1 not supported")
+    end
+
+    mu = @. cspikes + 1/cspikes
+    sigma = @. sqrt(2/d.beta) * sqrt(cspikes^2 - 1) / (cspikes * sqrt(d.n))
+
+    if d.scaled == false
+        mu *= sqrt(d.n)
+        sigma *= sqrt(d.n)
+    end
+    
+    MvNormal(mu, Diagonal(sigma .^ 2))
+end
+
 # SAMPLERS
 
 function _rand!(rng::AbstractRNG, d::SpikedWigner, x::DenseMatrix{T}) where {T <: Number}
@@ -46,8 +75,6 @@ function _rand!(rng::AbstractRNG, d::SpikedWigner, x::DenseMatrix{T}) where {T <
         A = randn(rng, d.n, d.n)
     elseif d.beta == 2
         A = (randn(rng, d.n, d.n) + im * randn(rng, d.n, d.n))/sqrt(2)
-    else
-        error("Wigner matrices only instantiated for β = 1, 2")
     end
 
     x[:] = (A + A')/sqrt(2)
@@ -120,28 +147,7 @@ function randbanded(rng::AbstractRNG, d::SpikedWigner)
         
 end
 
-function supercrit_spikes(d::SpikedWigner)
-    d.spikes[d.spikes .> 1]
-end
 
-# For beta = 1, see Feral & Peche 2006 Theorem 1.1
-# For beta = 2, see Peche Theorem 1.2
-function supercrit_dist(d::SpikedWigner)
 
-    cspikes = supercrit_spikes(d)
-    
-    if !allunique(cspikes)
-        throw("Supercritical spikes with multiplicity > 1 not supported")
-    end
 
-    mu = @. cspikes + 1/cspikes
-    sigma = @. sqrt(2/d.beta) * sqrt(cspikes^2 - 1) / (cspikes * sqrt(d.n))
-
-    if d.scaled == false
-        mu *= sqrt(d.n)
-        sigma *= sqrt(d.n)
-    end
-    
-    MvNormal(mu, Diagonal(sigma .^ 2))
-end
 

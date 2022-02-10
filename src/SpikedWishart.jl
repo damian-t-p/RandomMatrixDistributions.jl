@@ -40,6 +40,39 @@ function eltype(d::SpikedWishart)
     end
 end
 
+function supercrit_spikes(d::SpikedWishart)
+    gamma = d.p/d.n
+    d.spikes[d.spikes .> sqrt(gamma)]
+end
+
+# RELATED DISTRIBUTIONS
+
+bulk_dist(d::SpikedWishart) = MarchenkoPastur(d.p/d.n)
+
+# For beta = 1, see Paul 2007 Theorem 3
+# For beta = 2, see BBP 2005 Theorem 1.1(b)
+function supercrit_dist(d::SpikedWishart)
+
+    gamma = d.p/d.n
+    cspikes = supercrit_spikes(d)
+
+    if !allunique(cspikes)
+        throw("Supercritical spikes with multiplicity > 1 not supported")
+    end
+    
+    l = 1 .+ cspikes
+    
+    mu = @. l * (1 + gamma/cspikes)
+    sigma = @. sqrt(2/d.beta) * l * sqrt(gamma  * (1 - gamma/cspikes^2)) / sqrt(d.n)
+
+    if d.scaled == false
+        mu *= d.n
+        sigma *= d.n
+    end
+    
+    MvNormal(mu, Diagonal(sigma .^ 2))
+end
+
 # SAMPLERS
 
 function _rand!(rng::AbstractRNG, d::SpikedWishart, x::DenseMatrix{T}) where {T <: Number}
@@ -47,8 +80,6 @@ function _rand!(rng::AbstractRNG, d::SpikedWishart, x::DenseMatrix{T}) where {T 
         A = randn(rng, d.p, d.n)
     elseif d.beta == 2
         A = (randn(rng, d.p, d.n) + im * randn(rng, d.p, d.n))/sqrt(2)
-    else
-        error("Wishart matrices only instantiated for β = 1, 2")
     end
 
     for (i, spike) in enumerate(d.spikes)
@@ -127,32 +158,6 @@ function randbanded(rng::AbstractRNG, d::SpikedWishart)
         
 end
 
-function supercrit_spikes(d::SpikedWishart)
-    gamma = d.p/d.n
-    d.spikes[d.spikes .> sqrt(gamma)]
-end
 
 
-# For beta = 1, see Paul 2007 Theorem 3
-# For beta = 2, see BBP 2005 Theorem 1.1(b)
-function supercrit_dist(d::SpikedWishart)
 
-    gamma = d.p/d.n
-    cspikes = supercrit_spikes(d)
-
-    if !allunique(cspikes)
-        throw("Supercritical spikes with multiplicity > 1 not supported")
-    end
-    
-    l = 1 .+ cspikes
-    
-    mu = @. l * (1 + gamma/cspikes)
-    sigma = @. sqrt(2/d.beta) * l * sqrt(gamma  * (1 - gamma/cspikes^2)) / sqrt(d.n)
-
-    if d.scaled == false
-        mu *= d.n
-        sigma *= d.n
-    end
-    
-    MvNormal(mu, Diagonal(sigma .^ 2))
-end

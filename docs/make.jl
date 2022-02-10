@@ -5,6 +5,7 @@ makedocs(
     authors = "Damian Pavlyshyn",
     pages = [
         "Home" => "index.md",
+        "Examples" => "examples.md",
         "Library" => "library.md"
     ]
 )

@@ -32,6 +32,12 @@ function eltype(d::Jacobi)
     end
 end
 
+# RELATED DISTRIBUTIONS
+
+bulk_dist(d::Jacobi) = Wachter(d.p/d.n1, d.p/d.n2)
+
+# SAMPLERS
+
 function _rand!(rng::AbstractRNG, d::Jacobi, x::DenseMatrix{T}) where {T <: Number}
 
     E = rand(rng, SpikedWishart(d.beta, d.n1, d.p))
@@ -42,8 +48,6 @@ function _rand!(rng::AbstractRNG, d::Jacobi, x::DenseMatrix{T}) where {T <: Numb
     return x
     
 end
-
-# SAMPLERS
 
 function randreduced(rng::AbstractRNG, d::Jacobi)
     randtridiagonal(rng, d)

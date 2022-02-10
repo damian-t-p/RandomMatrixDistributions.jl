@@ -40,7 +40,7 @@ Currently implemented for Wishart with beta = 1 [4], beta = 2 [5] and Wigner wit
    The function `randeigvals` efficiently samples from the distribution of eigenvalues of the implemented random matrix distributions. It does this by generating a tridiagonal or banded matrix with eigenvalue equal in distribution to the specified model. 
 
 # Examples
-   An Jupyter notebook demonstrating all of the implemented eigenvalue samplers is provided in `/examples/eigenvalue-simulation.ipynb`.
+   See the documentation.
 
 # References
 [1] Dumitriu & Edelman, "Matrix Models for beta ensembles," Journal of Mathematical Physics, 11 (2002).

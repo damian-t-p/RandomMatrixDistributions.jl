@@ -1,5 +1,18 @@
 using RandomMatrixDistributions
+using Distributions
 using Test
+
+@testset "LimitingSpectralDistributions" begin
+
+    dist = SpikedWigner(1, 10, [10])
+    @test bulk_dist(dist) isa Distributions.Semicircle
+    @test bulk_dist(dist) == bulk_dist(EigvalDist(dist))
+    @test supercrit_dist(dist) == supercrit_dist(EigvalDist(dist))
+    
+    @test bulk_dist(SpikedWishart(2, 10, 5)) isa MarchenkoPastur
+    @test bulk_dist(Jacobi(2, 10, 10, 5)) isa Wachter
+    
+end
 
 @testset "MarchenkoPastur" begin
 

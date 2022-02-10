@@ -17,13 +17,15 @@ import Distributions: ContinuousUnivariateDistribution,
 
 import Random: rand
 
-export randeigvals, randeigstat, supercrit_dist,
+export randeigvals, randeigstat, supercrit_dist, bulk_dist
     minimum, maximum, quantile,
     cdf, pdf, entropy, insupport, mean, median, modes, kurtosis, skewness, std, var, moment,
     eigmax
 
 
 struct ComplexContinuous <: ValueSupport end
+
+include("EigvalDist.jl")
 
 # Generic eigenvalue sampling functions
 
@@ -62,18 +64,26 @@ end
 randeigstat(d::MatrixDistribution, eigstat::Function, n::Int) = randeigstat(Random.default_rng(), d, eigstat, n)
 
 """
-    supercrit_dist(d::MatrixDistribution)
+    bulk_dist(d::Union{MatrixDistribution, EigvalDist})
+
+Compute the limiting spectral distribution of `d`.
+"""
+bulk_dist(d::MatrixDistribution)
+bulk_dist(d::EigvalDist) = bulk_dist(d.matrixdist)
+
+"""
+    supercrit_dist(d::Union{MatrixDistribution, EigvalDist})
 
 Compute the approximate joint distribution of the supercritical eigenvalues of the ensemble `d`.
 """
 supercrit_dist(d::MatrixDistribution)
+supercrit_dist(d::EigvalDist) = supercrit_dist(d.matrixdist)
 
 include("BandedHelpers.jl")
 
 include("SpikedWigner.jl")
 include("SpikedWishart.jl")
 include("Jacobi.jl")
-include("EigvalDist.jl")
 
 include("densities/MarchenkoPastur.jl")
 include("densities/TracyWidom.jl")
