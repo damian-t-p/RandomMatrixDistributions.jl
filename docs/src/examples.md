@@ -35,7 +35,10 @@ matrixdist: SpikedWishart(beta=1, n=200, p=100, spikes=[0.5, 2.0, 3.0], scaled=t
 We can sample from `deig` as we would from any `Distributions.jl`-style distribution.
 In the following, I explicitly supply an object of type `AbstractRNG`, but if left unspecified, the sampler will use `Random.default_rng()`
 ```@meta specdist
-DocTestFilters = [r"0\.1869251107737921(?s).*2\.4313768183766524"]
+DocTestFilters = [
+r"0\.1869251107737921(?s).*2\.4313768183766524",
+r"[0-9]{5}(\n|$)"
+]
 ```
 
 ```jldoctest specdist
