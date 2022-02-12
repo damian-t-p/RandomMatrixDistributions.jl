@@ -16,7 +16,7 @@ A Julia package containing `Distributions.jl`-type specifications for various di
 
 * `SpikedWishart(beta, n, p, spikes; scaled=false)`: Wishart distribution with spiked covariance [1].
 
-	`spikes` is an array `[s1, ..., sr]` such that the Wishart covariance is diagonal with entries  1 + *s*<sub>1</sub>, ... , 1 + *s*<sub>r</sub>, 1, ..., 1.
+	`spikes` is an array `[s1, ..., sr]` such that the Wishart covariance is diagonal with entries  (1 + *s*<sub>1</sub>, ... , 1 + *s*<sub>r</sub>, 1, ..., 1).
 	
 * `Jacobi(beta, n1, n2, p)`: Random matrices of the form *E*(*E*+*H*)<sup>-1</sup>. Here *E* and *H* are (*n*<sub>1</sub>, *p*) and (*n*<sub>2</sub>, *p*) white Wisharts respectively. [2]
 
