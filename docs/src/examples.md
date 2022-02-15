@@ -188,7 +188,7 @@ plot(p1, p2) # hide
 For matrices with ``r`` spikes, the running time and number of allocations required to compute the eigenvalues of a banded representation scales linearly in ``r``, as we see in the following:
 ```@example timing
 spikenums = 2:2:50
-n = 100
+n = 500
 reps = 200
 
 times = Array{Float64}(undef, length(spikenums), 2)
