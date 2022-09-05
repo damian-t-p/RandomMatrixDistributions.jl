@@ -3,13 +3,13 @@ export MarchenkoPastur
 """
     MarchenkoPastur(γ::Real)
 
-Marchenko-Pastur distribution, where 0 < `γ` ≤ 1.
+Marchenko-Pastur distribution, where 0 < `γ`.
 
 The limiting spectral distribution of a p×p covariance matrix of n standard normal observations, where p/n → γ.
 """
 struct MarchenkoPastur <: ContinuousUnivariateDistribution
     gamma::Real
-    MarchenkoPastur(gamma) = 0 < gamma <= 1 ? new(gamma) : error("Gamma must be in (0, 1]")
+    MarchenkoPastur(gamma) = 0 < gamma ? new(gamma) : error("Gamma must be > 0")
 end
 
 function minimum(d::MarchenkoPastur)
@@ -26,7 +26,9 @@ function pdf(d::MarchenkoPastur, x::Real)
 
     if lambdamin < x < lambdamax
         return sqrt((lambdamax - x) * (x - lambdamin))/(d.gamma * x * 2 * pi)
+    elseif x == 0.0 && d.gamma > 1.0
+        1. - 1.0/d.gamma
     else
-        return 0
+        return 0.0
     end
 end
